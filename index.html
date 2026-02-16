@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Exposure Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Action Successful</div>
+
+    <!-- Login View -->
+    <section id="login-view" class="view active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Industry Exposure Tracker</h2>
+                    <p>Welcome back! Please login to your account.</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <!-- For demo purposes -->
+                    <div class="form-hint">
+                        <small>Student: student@demo.com / password</small><br>
+                        <small>Admin: admin@demo.com / password</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <!-- <p class="auth-footer">Don't have an account? <a href="#">Register</a></p> -->
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Dashboard View -->
+    <section id="student-view" class="view">
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Exposure Tracker</h3>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li class="active" onclick="showSubSection('student-dashboard')"><i class="fas fa-home"></i>
+                            Dashboard</li>
+                        <li onclick="showSubSection('log-activity')"><i class="fas fa-plus-circle"></i> Log Activity
+                        </li>
+                        <li onclick="showSubSection('view-activities')"><i class="fas fa-list"></i> View Activities</li>
+                        <!-- <li onclick="showSubSection('generate-report')"><i class="fas fa-file-alt"></i> Generate Report</li> -->
+                        <li class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                    </ul>
+                </nav>
+            </aside>
+            <main class="main-content">
+                <header class="top-bar">
+                    <h2 id="page-title">Dashboard</h2>
+                    <div class="user-profile">
+                        <span id="student-name">Student Name</span>
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                    </div>
+                </header>
+
+                <div id="student-dashboard" class="content-section active">
+                    <div class="welcome-banner">
+                        <h2 id="welcome-msg">Welcome back, Student!</h2>
+                        <p>Track your industrial progress and achieve your goals.</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon internship"><i class="fas fa-briefcase"></i></div>
+                            <div class="stat-info">
+                                <h3>Internships</h3>
+                                <p id="count-internship">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon training"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="stat-info">
+                                <h3>Trainings</h3>
+                                <p id="count-training">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon workshop"><i class="fas fa-tools"></i></div>
+                            <div class="stat-info">
+                                <h3>Workshops</h3>
+                                <p id="count-workshop">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card total">
+                            <div class="stat-icon total"><i class="fas fa-chart-pie"></i></div>
+                            <div class="stat-info">
+                                <h3>Total Logged</h3>
+                                <p id="count-total">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-section">
+                        <h3>Recent Applications & Activities</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="student-recent-activities-body">
+                                    <!-- Populated by JS -->
+                                    <tr>
+                                        <td colspan="4" class="empty-state">No recent activities found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="log-activity" class="content-section">
+                    <div class="form-container">
+                        <h3>Log New Activity</h3>
+                        <form id="activity-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="act-title">Activity Title</label>
+                                    <input type="text" id="act-title" placeholder="e.g., Web Development Workshop"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="act-type">Type</label>
+                                    <select id="act-type" required>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Training">Training</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="act-start">Start Date</label>
+                                    <input type="date" id="act-start" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="act-end">End Date</label>
+                                    <input type="date" id="act-end" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="act-desc">Description</label>
+                                <textarea id="act-desc" rows="4"
+                                    placeholder="Brief description of skills learned..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="act-status">Status</label>
+                                <select id="act-status">
+                                    <option value="Completed">Completed</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Activity</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="view-activities" class="content-section">
+                    <h3>All Activities</h3>
+                    <div class="filters">
+                        <input type="text" id="search-activities" placeholder="Search activities..."
+                            onkeyup="renderStudentActivities()">
+                        <select id="filter-type" onchange="renderStudentActivities()">
+                            <option value="All">All Types</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Training">Training</option>
+                            <option value="Workshop">Workshop</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-activities-body">
+                                <!-- Populated JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard View -->
+    <section id="admin-view" class="view">
+        <div class="dashboard-layout">
+            <aside class="sidebar admin-sidebar">
+                <div class="sidebar-header">
+                    <h3>Admin Portal</h3>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li class="active" onclick="showSubSection('admin-dashboard')"><i
+                                class="fas fa-tachometer-alt"></i> Dashboard</li>
+                        <li onclick="showSubSection('student-records')"><i class="fas fa-users"></i> Student Records
+                        </li>
+                        <li onclick="showSubSection('manage-opps')"><i class="fas fa-user-graduate"></i> Manage
+                            Opportunities</li>
+                        <li class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                    </ul>
+                </nav>
+            </aside>
+            <main class="main-content">
+                <header class="top-bar">
+                    <h2 id="admin-page-title">Admin Dashboard</h2>
+                    <div class="user-profile">
+                        <span>Admin User</span>
+                        <div class="avatar admin"><i class="fas fa-user-shield"></i></div>
+                    </div>
+                </header>
+
+                <div id="admin-dashboard" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #e3f2fd; color: #1e88e5;"><i
+                                    class="fas fa-users"></i></div>
+                            <div class="stat-info">
+                                <h3>Total Students</h3>
+                                <p id="admin-total-students">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #e8f5e9; color: #43a047;"><i
+                                    class="fas fa-check-circle"></i></div>
+                            <div class="stat-info">
+                                <h3>Activities Logged</h3>
+                                <p id="admin-total-activities">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #fff3e0; color: #fb8c00;"><i
+                                    class="fas fa-bullhorn"></i></div>
+                            <div class="stat-info">
+                                <h3>Opportunities Active</h3>
+                                <p id="admin-active-opps">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-section">
+                        <h3>Recent Student Activities</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Activity</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-recent-activities-body">
+                                    <!-- Populated JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="student-records" class="content-section">
+                    <h3>Student Records</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Total Activities</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-records-body">
+                                <!-- Populated JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="manage-opps" class="content-section">
+                    <div class="section-header-flex">
+                        <h3>Manage Opportunities</h3>
+                        <button class="btn btn-primary" onclick="showAddOppModal()"><i class="fas fa-plus"></i> Post
+                            New</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Deadline</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="opps-body">
+                                <!-- Populated JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- Modal for Adding Opportunity (Simplified) -->
+    <div id="opp-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Post New Opportunity</h3>
+            <form id="opp-form">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="opp-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Company/Organization</label>
+                    <input type="text" id="opp-company" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="opp-type">
+                        <option value="Internship">Internship</option>
+                        <option value="Job">Job</option>
+                        <option value="Workshop">Workshop</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="date" id="opp-deadline" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Post Opportunity</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
